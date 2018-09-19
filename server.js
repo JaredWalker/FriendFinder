@@ -1,7 +1,7 @@
 var express = require("express");
-var exphbs = require("express-handlebars");
-var bodyparser = require("body-parser");
-var path = require("path");
+// var exphbs = require("express-handlebars");
+var bodyParser = require("body-parser");
+
 
 
 var app = express();
@@ -9,38 +9,19 @@ var app = express();
 
 var PORT = process.env.PORT || 8080;
 
-app.use(express.static("app/public"));
 
 
 
-app.get("/", function(req, res){
-   res.sendFile(path.join(__dirname, "/app/public/home.html"));
-});
 
+app.use(bodyParser.urlencoded({ extended: true}));
+   
+app.use(bodyParser.json());
 
-app.get("/survey", function(req, res){
-   res.sendFile(path.join(__dirname, "/app/public/survey.html"));
-});
-
-
-app.get("/:text", function(req, res){
-   res.sendFile(path.join(__dirname, "/app/public/home.html"));
-});
-
-
-app.get("/api/friends", function(req, res){
-   res.sendFile(path.join(__dirname, "/app/data/friends.js"));
-});
-
-
-
-app.post("/api/friends", function(req, res){
-   var match = req.body
-});
-
+require("./app/routing/apiRoutes")(app);
+require("./app/routing/htmlRoutes")(app);
 
 
 
 app.listen(PORT, function(){
-   console.log("Server listening on: http://localhost:" + PORT);
+   console.log("App listening on PORT:" + PORT);
 });
